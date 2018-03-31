@@ -2,7 +2,7 @@
 
 import datetime
 import math
-import re #regex
+import re  # regex
 import pyperclip
 
 # import urllib3
@@ -11,6 +11,8 @@ import pyperclip
 #import RecipeItem
 
 # Will eventually work on the scraping version
+
+
 def scrape_stuff():
     pass
     # page_link = 'https://www.gameskinny.com/96m7g/kingdom-hearts-birth-by-sleep-aquas-ultimate-command-deck-guide'
@@ -24,7 +26,7 @@ def to_time(hours, minutes):
 
     hour = 0
     minute = 0
-    extra_hour = 0 # Extra hour for if/when minutes go over 60 in this calc
+    extra_hour = 0  # Extra hour for if/when minutes go over 60 in this calc
 
     if minutes > 59:
         minute = minutes - 60
@@ -51,7 +53,7 @@ def to_time(hours, minutes):
     # Add padding for single-digit times when necessary
     pad = ('0' if (minute < 10) else '')
 
-    return ( str(hour) + ':' + ( pad + str(minute) ) + day_part )
+    return str(hour) + ':' + (pad + str(minute)) + day_part
 
 def get_hours_worked():
 
@@ -95,8 +97,8 @@ current_minute = now.minute
 # Will set this up to read from file or use dialog setup, later
 # That will help with using custom target_hours
 target_hours_standard = {"monday": 8, "tuesday": 16, "wednesday": 24,
-                       "thursday": 32, "friday": 40, "saturday": 48,
-                       "sunday": 56}
+                         "thursday": 32, "friday": 40, "saturday": 48,
+                         "sunday": 56}
 
 ### INPUT ###
 # Whether or not you've taken your lunch. If you have, it's 0 (no time added to total) else 1
