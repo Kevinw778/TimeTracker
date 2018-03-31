@@ -14,8 +14,8 @@ from bs4 import BeautifulSoup
 
 
 def scrape_stuff():
-
-    page_link = 'https://www.gameskinny.com/96m7g/kingdom-hearts-birth-by-sleep-aquas-ultimate-command-deck-guide'
+    pass
+    # page_link = 'https://www.gameskinny.com/96m7g/kingdom-hearts-birth-by-sleep-aquas-ultimate-command-deck-guide'
     # page = urllib3.urlopen(page_link)
 
     # creates the soup object to work with -- Has one child but many descendants
@@ -86,6 +86,8 @@ lunch_taken = (
 
 
 ### VARIABLE OVERRIDE ###
+# Override day / target_hours_standard values here
+
 #day = 'monday'
 ### VARIABLE OVERRIDE ###
 
@@ -106,11 +108,9 @@ hours_worked = hours + minutes
 time_remaining = target_hours_standard[day] - hours_worked
 
 # Hours Remaining
-#hours_remaining = int(time[0])
 hours_remaining = int(time_remaining)
 
 # Minutes Remaining
-#minutes_remaining = int(time[1])
 minutes_remaining = math.ceil((float(time_remaining % 1) * 60))
 
 # Target time that the user should leave work for the day
@@ -119,11 +119,8 @@ target_minute = time_minute + minutes_remaining
 
 target_time = to_time(target_hour, target_minute)
 
-# This is calculating 5-hours off for some reason... Look into this -
-# simulate the day when I get home
+
 print("Leave work by: " + target_time)
 
-# for n in time:
-#    print (n)
-
+# Some ways I run this require this to prevent automatically ending the run
 input("Press ENTER to exit")
