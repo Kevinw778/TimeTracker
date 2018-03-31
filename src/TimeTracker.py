@@ -5,8 +5,8 @@ import math
 import re  # regex
 import pyperclip
 
-import urllib3
-from bs4 import BeautifulSoup
+# import urllib3
+# from bs4 import BeautifulSoup
 
 #import RecipeItem
 
@@ -18,8 +18,7 @@ def scrape_stuff():
     # page_link = 'https://www.gameskinny.com/96m7g/kingdom-hearts-birth-by-sleep-aquas-ultimate-command-deck-guide'
     # page = urllib3.urlopen(page_link)
 
-    # creates the soup object to work with -- Has one child but many descendants
-    # soup = BeautifulSoup(page, 'html.parser')
+    # soup = BeautifulSoup(page, 'html.parser') # creates the soup object to work with -- Has one child but many descendants
 
 
 # Converts passed in hours & minutes into Time - hh:mm[am/pm]
@@ -30,15 +29,15 @@ def to_time(hours, minutes):
     extra_hour = 0  # Extra hour for if/when minutes go over 60 in this calc
 
     if minutes > 59:
-        minute = (minutes - 60)
+        minute = minutes - 60
         extra_hour = 1
 
     else:
         minute = minutes
 
-    # Honestly most of this is overkill -- input won't generally cross these cases
+    # Handle hours going over 24
     if hours >= 24:
-        hour = 1 + extra_hour + (hours - 24)
+        hour = extra_hour + (hours - 24)
 
     else:
         hour += (hours + extra_hour)
@@ -56,6 +55,33 @@ def to_time(hours, minutes):
 
     return str(hour) + ':' + (pad + str(minute)) + day_part
 
+def get_hours_worked():
+
+    hours_worked = None
+    # Regex to extract hour/minute/second values
+    reg = re.compile(r"\d+")
+    clip = pyperclip.paste()
+
+    time_values = {'hours', 'minutes', 'seconds'}
+    result_set = time_values.intersection(set(clip.split()))
+
+    # true if hours, minutes, and seconds are present
+    proper_format = (time_values == result_set)
+
+    if proper_format:
+        time = reg.findall(clip) # Contains (hh:mm:ss) in a list
+
+        print("Time List: {}\n".format(time))
+
+        hours = int(time[0])
+        minutes = float( int(time[1]) / 60) # convert from minutes to decimal
+        hours_worked = hours + minutes
+
+    else:
+        hours_worked = abs( float(input("Enter Your Current Hours Worked\n")) )
+
+    return hours_worked
+
 
 ### Main Program ###
 now = datetime.datetime.now()
@@ -64,25 +90,19 @@ now = datetime.datetime.now()
 day = now.strftime("%A").lower()
 
 # Time separated into Hour & Minutes
-time_hour = now.hour
-time_minute = now.minute
+current_hour = now.hour
+current_minute = now.minute
 
 
-# Will set this up to read from file, later
+# Will set this up to read from file or use dialog setup, later
 # That will help with using custom target_hours
 target_hours_standard = {"monday": 8, "tuesday": 16, "wednesday": 24,
                          "thursday": 32, "friday": 40, "saturday": 48,
                          "sunday": 56}
 
-# Keeping this for when I implement the "either or" option of data-entry
-# INPUT #
-# Number of hours worked this week
-#hours_worked = abs( float(input("Enter Your Current Hours Worked\n")) )
-
 ### INPUT ###
-# Whether or not you've taken your lunch. If you have, it's 0 (no time subtracted from total) else 1
-lunch_taken = (
-    0 if (input("Have you taken your lunch yet? (y/n)\n").lower() == 'y') else 1)
+# Whether or not you've taken your lunch. If you have, it's 0 (no time added to total) else 1
+lunch_taken = ( 0 if ( input("Have you taken your lunch yet? (y/n)\n").lower() == 'y') else 1)
 
 
 ### VARIABLE OVERRIDE ###
@@ -91,18 +111,7 @@ lunch_taken = (
 #day = 'monday'
 ### VARIABLE OVERRIDE ###
 
-# Regular expression to parse the time info in clipboard
-reg = re.compile(r"\d+")
-
-clip = pyperclip.paste()
-
-time = reg.findall(clip)  # Contains (hh:mm:ss) in a list
-
-# Break the time up into pieces and convert into #'s instead of strings
-hours = int(time[0])
-minutes = float(int(time[1]) / 60)  # convert from minutes to decimal
-
-hours_worked = hours + minutes
+hours_worked = get_hours_worked()
 
 # Time Remaining - Minutes & Seconds
 time_remaining = target_hours_standard[day] - hours_worked
@@ -110,17 +119,33 @@ time_remaining = target_hours_standard[day] - hours_worked
 # Hours Remaining
 hours_remaining = int(time_remaining)
 
+print("Hours Remaining: " + str(hours_remaining))
+
 # Minutes Remaining
+<<<<<<< HEAD
 minutes_remaining = math.ceil((float(time_remaining % 1) * 60))
+=======
+minutes_remaining = math.ceil( ( float(time_remaining % 1) * 60) )
+
+print("Minutes Remaining: " + str(minutes_remaining))
+>>>>>>> 5ca63e435b2d37353fa2031e10b800a3845ce18b
 
 # Target time that the user should leave work for the day
-target_hour = (time_hour + hours_remaining) + lunch_taken
-target_minute = time_minute + minutes_remaining
+target_hour = (current_hour + hours_remaining) + lunch_taken
+target_minute = current_minute + minutes_remaining
+
+print("Target Hour: {}\n".format(target_hour))
+print("Target Minute: {}\n".format(target_minute))
 
 target_time = to_time(target_hour, target_minute)
 
+<<<<<<< HEAD
 
 print("Leave work by: " + target_time)
 
 # Some ways I run this require this to prevent automatically ending the run
+=======
+print("Leave work by: " + target_time)
+
+>>>>>>> 5ca63e435b2d37353fa2031e10b800a3845ce18b
 input("Press ENTER to exit")
