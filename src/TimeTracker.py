@@ -122,13 +122,9 @@ hours_remaining = int(time_remaining)
 print("Hours Remaining: " + str(hours_remaining))
 
 # Minutes Remaining
-<<<<<<< HEAD
-minutes_remaining = math.ceil((float(time_remaining % 1) * 60))
-=======
 minutes_remaining = math.ceil( ( float(time_remaining % 1) * 60) )
 
 print("Minutes Remaining: " + str(minutes_remaining))
->>>>>>> 5ca63e435b2d37353fa2031e10b800a3845ce18b
 
 # Target time that the user should leave work for the day
 target_hour = (current_hour + hours_remaining) + lunch_taken
@@ -139,13 +135,6 @@ print("Target Minute: {}\n".format(target_minute))
 
 target_time = to_time(target_hour, target_minute)
 
-<<<<<<< HEAD
-
 print("Leave work by: " + target_time)
 
-# Some ways I run this require this to prevent automatically ending the run
-=======
-print("Leave work by: " + target_time)
-
->>>>>>> 5ca63e435b2d37353fa2031e10b800a3845ce18b
 input("Press ENTER to exit")
